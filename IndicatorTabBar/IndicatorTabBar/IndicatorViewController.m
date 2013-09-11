@@ -52,6 +52,7 @@
     self.mScrollView.showsVerticalScrollIndicator = NO;
     self.mScrollView.scrollsToTop = NO;
     self.mScrollView.delegate = self;
+    //[mScrollView setBounces:NO];
     
 //    self.mPageControl.numberOfPages = 4;
 //    self.mPageControl.currentPage = 0;
@@ -148,6 +149,10 @@
 #define CGRectSetPos( r, x, y ) CGRectMake( x, y, r.size.width, r.size.height )
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [scrollView setContentOffset:
+        CGPointMake(scrollView.contentOffset.x,
+                    -scrollView.frame.origin.y + scrollView.contentSize.height - scrollView.frame.size.height)];
+    
     lineView.frame = CGRectSetPos(lineView.frame, 10+scrollView.contentOffset.x*9/28, 40);
 }
 

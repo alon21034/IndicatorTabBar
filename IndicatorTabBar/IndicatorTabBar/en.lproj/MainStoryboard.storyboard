@@ -40,14 +40,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="280" height="508"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SDH-qj-ZYa"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SDH-qj-ZYa">
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="SDH-qj-ZYa" firstAttribute="leading" secondItem="kBa-0H-XMk" secondAttribute="leading" type="default" id="3ik-gz-BPb"/>
-                            <constraint firstAttribute="bottom" secondItem="SDH-qj-ZYa" secondAttribute="bottom" constant="3" id="Ade-Un-hsP"/>
+                            <constraint firstItem="SDH-qj-ZYa" firstAttribute="top" secondItem="kBa-0H-XMk" secondAttribute="top" constant="88" id="kvS-fa-fdy"/>
                             <constraint firstItem="SDH-qj-ZYa" firstAttribute="trailing" secondItem="kBa-0H-XMk" secondAttribute="trailing" type="default" id="m4l-9g-S0E"/>
-                            <constraint firstItem="SDH-qj-ZYa" firstAttribute="top" secondItem="kBa-0H-XMk" secondAttribute="top" constant="85" id="pVG-dN-eYi"/>
+                            <constraint firstItem="SDH-qj-ZYa" firstAttribute="bottom" secondItem="kBa-0H-XMk" secondAttribute="bottom" type="default" id="wpV-Up-7HL"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
