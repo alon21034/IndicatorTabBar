@@ -8,9 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol IndicatorViewDelegate <NSObject>
+
+-(void) onTabSelected:(int)page;
+
+@end
+
 @interface IndicatorViewController : UIViewController<UIScrollViewDelegate>
+
+@property (assign, nonatomic) id<IndicatorViewDelegate> mDelegate;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *mScrollView;
 @property (strong, nonatomic) NSMutableArray *mControllerArray;
+@property (strong, nonatomic) UIView *lineView;
+@property (strong, nonatomic) NSMutableArray *mTabButtonArray;
 
 @end

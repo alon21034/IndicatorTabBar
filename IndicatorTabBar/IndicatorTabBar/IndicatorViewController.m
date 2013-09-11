@@ -17,6 +17,9 @@
 
 @synthesize mControllerArray;
 @synthesize mScrollView;
+@synthesize lineView;
+@synthesize mTabButtonArray;
+@synthesize mDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,6 +39,7 @@
     for (NSUInteger i = 0; i < 4; i++)
     {
 		[controllers addObject:[NSNull null]];
+        [mTabButtonArray addObject:[NSNull null]];
     }
     self.mControllerArray = controllers;
     
@@ -58,6 +62,27 @@
     //
     [self loadScrollViewWithPage:0];
     [self loadScrollViewWithPage:1];
+    
+    for (int i = 0 ; i < 4 ; i++) {
+        [self addButton:[NSString stringWithFormat:@"title:%d", i] :10+i*90 :10 :80 :30 :i];
+    }
+    
+    lineView = [[UIView alloc] initWithFrame:CGRectMake(10, 40, 80, 5)];
+    lineView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:lineView];
+}
+
+- (void)addButton:(NSString*)title :(float)x :(float)y :(float)width :(float)height :(int)index{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button addTarget:self action:@selector(onTabButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [button setTitle:title forState:UIControlStateNormal];
+    button.frame = CGRectMake(x, y, width, height);
+    button.tag = index;
+    
+    [self.view addSubview:button];
+    [mTabButtonArray replaceObjectAtIndex:index withObject:button];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,6 +90,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+-(void) onTabButtonClicked:(UIButton*)button {
+    NSLog(@"on clicked: %d", button.tag);
+}
+
+#pragma mark ScrollViewDelegate
 
 - (void)loadScrollViewWithPage:(NSUInteger)page
 {
@@ -107,7 +138,17 @@
     [self loadScrollViewWithPage:page];
     [self loadScrollViewWithPage:page + 1];
     
+    
+    
     // a possible optimization would be to unload the views+controllers which are no longer visible
+}
+
+#pragma mark LineView
+
+#define CGRectSetPos( r, x, y ) CGRectMake( x, y, r.size.width, r.size.height )
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    lineView.frame = CGRectSetPos(lineView.frame, 10+scrollView.contentOffset.x*9/28, 40);
 }
 
 @end
