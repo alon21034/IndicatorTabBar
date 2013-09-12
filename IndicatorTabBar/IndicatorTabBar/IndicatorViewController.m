@@ -10,7 +10,11 @@
 #import "ContentViewController.h"
 
 @interface IndicatorViewController ()
-
+{
+    int mTabButtonWidth;
+    int mTabButtonHeight;
+    int mTabButtonNum;
+}
 @end
 
 @implementation IndicatorViewController
@@ -20,6 +24,7 @@
 @synthesize lineView;
 @synthesize mTabButtonArray;
 @synthesize mDelegate;
+@synthesize mPageControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,10 +38,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	// Do any additional setup after loading 
     
     NSMutableArray *controllers = [[NSMutableArray alloc] init];
-    for (NSUInteger i = 0; i < 4; i++)
+    mTabButtonArray = [[NSMutableArray alloc] init];
+    
+    mTabButtonNum = 4;
+    for (NSUInteger i = 0; i < mTabButtonNum; i++)
     {
 		[controllers addObject:[NSNull null]];
         [mTabButtonArray addObject:[NSNull null]];
@@ -45,17 +53,19 @@
     
     // a page is the width of the scroll view
     self.mScrollView.pagingEnabled = YES;
-    self.mScrollView.contentSize =
-    CGSizeMake(280 * 4, 420);
-    NSLog(@"%lf %lf",mScrollView.contentSize.width, mScrollView.contentSize.height);
+    
+    // (TODO) shouldn't use const here.
+    self.mScrollView.contentSize = CGSizeMake(280 * 4, 420);
+    mTabButtonWidth = 80;
+    mTabButtonHeight = 30;
+    
     self.mScrollView.showsHorizontalScrollIndicator = YES;
     self.mScrollView.showsVerticalScrollIndicator = NO;
     self.mScrollView.scrollsToTop = NO;
     self.mScrollView.delegate = self;
-    //[mScrollView setBounces:NO];
     
-//    self.mPageControl.numberOfPages = 4;
-//    self.mPageControl.currentPage = 0;
+    self.mPageControl.numberOfPages = 4;
+    self.mPageControl.currentPage = 0;
     
     // pages are created on demand
     // load the visible page
@@ -64,11 +74,14 @@
     [self loadScrollViewWithPage:0];
     [self loadScrollViewWithPage:1];
     
-    for (int i = 0 ; i < 4 ; i++) {
-        [self addButton:[NSString stringWithFormat:@"title:%d", i] :10+i*90 :10 :80 :30 :i];
+    for (int i = 0 ; i < mTabButtonNum ; i++) {
+        [self addButton:[NSString stringWithFormat:@"title:%d", i]
+                       :PADDING+i*(mTabButtonWidth + PADDING) :PADDING
+                       :mTabButtonWidth :mTabButtonHeight :i];
     }
     
-    lineView = [[UIView alloc] initWithFrame:CGRectMake(10, 40, 80, 5)];
+    lineView = [[UIView alloc] initWithFrame:
+                CGRectMake(PADDING, mTabButtonHeight, mTabButtonWidth, PADDING)];
     lineView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:lineView];
 }
@@ -94,6 +107,29 @@
 
 -(void) onTabButtonClicked:(UIButton*)button {
     NSLog(@"on clicked: %d", button.tag);
+}
+
+- (void)gotoPage:(BOOL)animated
+{
+    NSInteger page = self.mPageControl.currentPage;
+    
+    //[self highlightButton:page];
+    
+    // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
+    [self loadScrollViewWithPage:page - 1];
+    [self loadScrollViewWithPage:page];
+    [self loadScrollViewWithPage:page + 1];
+    
+	// update the scroll view to the appropriate page
+    CGRect bounds = self.mScrollView.bounds;
+    bounds.origin.x = 280 * page;
+    bounds.origin.y = 0;
+    [self.mScrollView scrollRectToVisible:bounds animated:animated];
+}
+
+- (IBAction)changePage:(id)sender
+{
+    [self gotoPage:YES];    // YES = animate
 }
 
 #pragma mark ScrollViewDelegate
@@ -139,8 +175,6 @@
     [self loadScrollViewWithPage:page];
     [self loadScrollViewWithPage:page + 1];
     
-    
-    
     // a possible optimization would be to unload the views+controllers which are no longer visible
 }
 
@@ -153,7 +187,9 @@
         CGPointMake(scrollView.contentOffset.x,
                     -scrollView.frame.origin.y + scrollView.contentSize.height - scrollView.frame.size.height)];
     
-    lineView.frame = CGRectSetPos(lineView.frame, 10+scrollView.contentOffset.x*9/28, 40);
+    lineView.frame = CGRectSetPos(lineView.frame,
+                                  PADDING+scrollView.contentOffset.x*(mTabButtonWidth + PADDING)/280,
+                                  mTabButtonHeight);
 }
 
 @end

@@ -41,7 +41,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SDH-qj-ZYa">
+                                <subviews>
+                                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="sGj-ns-pSd">
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </pageControl>
+                                </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="sGj-ns-pSd" secondAttribute="trailing" constant="121" id="Ffp-Ye-OuC"/>
+                                    <constraint firstItem="sGj-ns-pSd" firstAttribute="top" secondItem="SDH-qj-ZYa" secondAttribute="top" constant="384" id="NYL-9H-Yul"/>
+                                    <constraint firstItem="sGj-ns-pSd" firstAttribute="centerX" secondItem="SDH-qj-ZYa" secondAttribute="centerX" type="default" id="fvW-HM-3yh"/>
+                                    <constraint firstItem="sGj-ns-pSd" firstAttribute="bottom" secondItem="SDH-qj-ZYa" secondAttribute="bottom" type="default" id="y2D-DL-tOP"/>
+                                </constraints>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -54,6 +65,7 @@
                     </view>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="mPageControl" destination="sGj-ns-pSd" id="DCB-nl-30u"/>
                         <outlet property="mScrollView" destination="SDH-qj-ZYa" id="IGs-Dj-q5x"/>
                     </connections>
                 </viewController>
@@ -66,6 +78,8 @@
         <class className="IndicatorViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/IndicatorViewController.h"/>
             <relationships>
+                <relationship kind="action" name="changePage:"/>
+                <relationship kind="outlet" name="mPageControl" candidateClass="UIPageControl"/>
                 <relationship kind="outlet" name="mScrollView" candidateClass="UIScrollView"/>
             </relationships>
         </class>

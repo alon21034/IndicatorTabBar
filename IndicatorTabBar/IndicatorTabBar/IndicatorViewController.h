@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define PADDING 5
+
 @protocol IndicatorViewDelegate <NSObject>
 
 -(void) onTabSelected:(int)page;
@@ -19,6 +21,7 @@
 @property (assign, nonatomic) id<IndicatorViewDelegate> mDelegate;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *mScrollView;
+@property (strong, nonatomic) IBOutlet UIPageControl *mPageControl;
 @property (strong, nonatomic) NSMutableArray *mControllerArray;
 @property (strong, nonatomic) UIView *lineView;
 @property (strong, nonatomic) NSMutableArray *mTabButtonArray;
